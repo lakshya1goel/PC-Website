@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pcwebsite/utils/routers/app_routers.dart';
 
 class CustomButton extends StatefulWidget {
   const CustomButton({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _CustomButtonState extends State<CustomButton> {
           _isButtonDisabled = false;
         });
       });
+      router.go('/register');
     }
   }
 

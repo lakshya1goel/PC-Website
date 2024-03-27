@@ -1,8 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:pcwebsite/models/registration/social_media_icon.dart';
 import 'package:pcwebsite/services/launch_urls.dart';
+import 'package:pcwebsite/utils/constants/data/social_data.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
+import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import '../../widgets/custom_submit_button.dart';
 
@@ -97,22 +100,7 @@ class LandingPage extends StatelessWidget {
                           if(screenWidth < 500)
                             const CustomButton(),
                           const SizedBox(height: 50),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(onPressed: (){
-                                launchURL('https://www.instagram.com/programmingclub.akgec/');
-                              }, icon: Image.asset('assets/icons/instagram.png')),
-                              const SizedBox(width: 20,),
-                              IconButton(onPressed: (){
-                                launchURL('https://www.linkedin.com/company/programming-club-akgec/mycompany/');
-                              }, icon: Image.asset('assets/icons/linkedin.png')),
-                              const SizedBox(width: 20,),
-                              IconButton(onPressed: (){
-                                launchURL('https://www.instagram.com/programmingclub.akgec/');
-                              }, icon: Image.asset('assets/icons/twitter.png')),
-                            ],
-                          )
+                          SocialMediaIconsRow(socialMediaIcons: socialMediaIcons),
                         ],
                       ),
                     )

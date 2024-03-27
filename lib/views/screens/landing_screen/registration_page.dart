@@ -23,7 +23,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/backgroundImg.jpg'),
                 fit: BoxFit.cover,
@@ -40,7 +40,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.6,
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15.0),
@@ -51,9 +51,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: "Name",
                             labelStyle: TextStyle(
                               color: Colors.white,
@@ -62,9 +62,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: "College email id",
                               labelStyle: TextStyle(
                                 color: Colors.white,
@@ -73,9 +73,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: "Student Number",
                               labelStyle: TextStyle(
                                 color: Colors.white,
@@ -84,11 +84,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Text("Branch?", style: TextStyle(color: Colors.white),),
-                            SizedBox(width: 100,),
+                            const Text("Branch?", style: TextStyle(color: Colors.white),),
+                            const SizedBox(width: 100,),
                             DropdownButton<String>(
                               value: branch,
                               elevation: 16,
@@ -103,7 +103,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),
@@ -114,11 +114,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Text("Section?", style: TextStyle(color: Colors.white),),
-                            SizedBox(width: 100,),
+                            const Text("Section?", style: TextStyle(color: Colors.white),),
+                            const SizedBox(width: 100,),
                             DropdownButton<String>(
                               value: section,
                               elevation: 16,
@@ -133,7 +133,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),
@@ -144,11 +144,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Text('Is Hosteler?', style: TextStyle(color: Colors.white),),
-                            SizedBox(width: 60,),
+                            const Text('Is Hosteler?', style: TextStyle(color: Colors.white),),
+                            const SizedBox(width: 60,),
                             Radio(
                               value: true,
                               groupValue: isHosteler,
@@ -158,8 +158,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 });
                               },
                             ),
-                            Text('Yes', style: TextStyle(color: Colors.white),),
-                            SizedBox(width: 60,),
+                            const Text('Yes', style: TextStyle(color: Colors.white),),
+                            const SizedBox(width: 60,),
                             Radio(
                               value: false,
                               groupValue: isHosteler,
@@ -169,16 +169,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 });
                               },
                             ),
-                            Text('No', style: TextStyle(color: Colors.white),),
+                            const Text('No', style: TextStyle(color: Colors.white),),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Text("Gender?", style: TextStyle(color: Colors.white),),
-                            SizedBox(width: 100,),
+                            const Text("Gender?", style: TextStyle(color: Colors.white),),
+                            const SizedBox(width: 100,),
                             DropdownButton<String>(
                               value: gender,
                               elevation: 16,
@@ -193,7 +193,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),
@@ -204,9 +204,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: "Hackerrank id",
                               labelStyle: TextStyle(
                                 color: Colors.white,
@@ -214,11 +214,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       Center(
                         child: ElevatedButton(
                             onPressed: (){},
-                            child: Text("Register"),
+                            child: const Text("Register"),
                         ),
                       ),
                     ],

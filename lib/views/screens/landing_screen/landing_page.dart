@@ -1,7 +1,6 @@
+import 'dart:math';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:pcwebsite/utils/constants/timer/config.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
@@ -10,29 +9,34 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('asset/background.jpg'),
+            image: AssetImage('assets/backgroundImg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                     Text(
                       '#include 3.0 Coming Soon',
                       style: TextStyle(
-                        fontSize: 60,
+                        fontSize: (60/screenWidth)*screenWidth,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     const Text(
@@ -43,15 +47,15 @@ class LandingPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 100),
+                     SizedBox(height: screenWidth <= 500 ?50:100),
                     SlideCountdownSeparated(
                       duration: const Duration(days: 2),
-                      style: const TextStyle(
-                        fontSize: 50,
+                      style: TextStyle(
+                        fontSize: screenWidth <= 500 ?20:50,
                         color: Colors.white,
                       ),
-                      separatorStyle: const TextStyle(
-                        fontSize: 50,
+                      separatorStyle: TextStyle(
+                        fontSize: screenWidth <= 500 ?20:50,
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
@@ -74,7 +78,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 50),
                     SizedBox(
-                      width: 430,
+                      width: screenWidth >= 580?480:380, // Adjusted width to be 80% of screen width
                       child: Column(
                         children: [
                           Row(
@@ -82,8 +86,10 @@ class LandingPage extends StatelessWidget {
                             children: [
                               const CustomInputField(),
                               const SizedBox(width: 20,),
+                              if(screenWidth >= 500)
                               SizedBox(
-                                height: 40,
+                                  height: 40,
+
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     style: ButtonStyle(
@@ -95,15 +101,30 @@ class LandingPage extends StatelessWidget {
                               )
                             ],
                           ),
+                          if(screenWidth < 500)
+                          const SizedBox(height: 30),
+                          if(screenWidth < 500)
+                            SizedBox(
+                                height: 40,
+                                width: screenWidth <= 500 ?screenWidth*0.50:120,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                  ),
+                                  child: const Text('Subscribe'),
+                                )
+                            ),
                           const SizedBox(height: 50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              IconButton(onPressed: (){}, icon: Image.asset('asset/icons/instagram.png')),
+                              IconButton(onPressed: (){}, icon: Image.asset('assets/icons/instagram.png')),
                               const SizedBox(width: 20,),
-                              IconButton(onPressed: (){}, icon: Image.asset('asset/icons/linkedin.png')),
+                              IconButton(onPressed: (){}, icon: Image.asset('assets/icons/linkedin.png')),
                               const SizedBox(width: 20,),
-                              IconButton(onPressed: (){}, icon: Image.asset('asset/icons/twitter.png')),
+                              IconButton(onPressed: (){}, icon: Image.asset('assets/icons/twitter.png')),
                             ],
                           )
                         ],
@@ -112,12 +133,10 @@ class LandingPage extends StatelessWidget {
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-

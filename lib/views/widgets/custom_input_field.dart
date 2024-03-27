@@ -20,7 +20,6 @@ class CustomInputField extends StatelessWidget {
             child: TextField(
               style: const TextStyle(color: Colors.white), // Text color
               decoration: InputDecoration(
-                // border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
                 hintText: 'Email Address',
                 hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),

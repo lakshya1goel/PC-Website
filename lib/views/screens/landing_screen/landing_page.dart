@@ -32,7 +32,7 @@ class LandingPage extends StatelessWidget {
                      Text(
                       '#include 3.0 Coming Soon',
                       style: TextStyle(
-                        fontSize: (60/screenWidth)*screenWidth,
+                        fontSize: max(40,screenWidth*0.05),
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
@@ -47,15 +47,15 @@ class LandingPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                     SizedBox(height: screenWidth <= 500 ?50:100),
+                     SizedBox(height: screenWidth < 500 ?50:100),
                     SlideCountdownSeparated(
                       duration: const Duration(days: 2),
                       style: TextStyle(
-                        fontSize: screenWidth <= 500 ?20:50,
+                        fontSize: screenWidth<500?screenWidth*0.09:50,
                         color: Colors.white,
                       ),
                       separatorStyle: TextStyle(
-                        fontSize: screenWidth <= 500 ?20:50,
+                        fontSize: screenWidth<500?screenWidth*0.09:50,
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
@@ -74,11 +74,11 @@ class LandingPage extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(max(10,screenWidth*0.015)),
                     ),
                     const SizedBox(height: 50),
                     SizedBox(
-                      width: screenWidth >= 580?480:380, // Adjusted width to be 80% of screen width
+                      width: max(380,screenWidth*0.2),
                       child: Column(
                         children: [
                           Row(
@@ -87,35 +87,13 @@ class LandingPage extends StatelessWidget {
                               const CustomInputField(),
                               const SizedBox(width: 20,),
                               if(screenWidth >= 500)
-                              SizedBox(
-                                  height: 40,
-
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                      foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                    ),
-                                    child: const Text('Subscribe'),
-                                  )
-                              )
+                              const CustomButton()
                             ],
                           ),
                           if(screenWidth < 500)
                           const SizedBox(height: 30),
                           if(screenWidth < 500)
-                            SizedBox(
-                                height: 40,
-                                width: screenWidth <= 500 ?screenWidth*0.50:120,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                  ),
-                                  child: const Text('Subscribe'),
-                                )
-                            ),
+                            const CustomButton(),
                           const SizedBox(height: 50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -140,3 +118,25 @@ class LandingPage extends StatelessWidget {
     );
   }
 }
+
+class CustomButton extends StatelessWidget {
+  const CustomButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return SizedBox(
+        height: 40,
+        width: screenWidth < 500 ?screenWidth*0.50:120,
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+          ),
+          child: const Text('Subscribe'),
+        )
+    );
+  }
+}
+

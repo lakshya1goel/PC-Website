@@ -51,16 +51,17 @@ class LandingPage extends StatelessWidget {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                      SizedBox(height: screenWidth < 500 ?50:100),
                     SlideCountdownSeparated(
                       duration: const Duration(days: 2),
                       style: TextStyle(
-                        fontSize: screenWidth<500?screenWidth*0.09:50,
+                        fontSize: screenWidth<500?screenWidth*0.08:50,
                         color: Colors.white,
                       ),
                       separatorStyle: TextStyle(
-                        fontSize: screenWidth<500?screenWidth*0.09:50,
+                        fontSize: screenWidth<500?screenWidth*0.08:50,
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
@@ -79,7 +80,7 @@ class LandingPage extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      padding: EdgeInsets.all(max(10,screenWidth*0.015)),
+                      padding: EdgeInsets.all(max(8,screenWidth*0.015)),
                     ),
                     const SizedBox(height: 50),
                     SizedBox(

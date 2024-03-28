@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:pcwebsite/views/screens/landing_screen/recaptcha.dart';
 import 'package:pcwebsite/views/widgets/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/custom_textform_field.dart';
 
@@ -56,9 +57,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextFormField(label: "Name"),
-                      CustomTextFormField(label: "College email id"),
+                      CustomTextFormField(label: "First Name"),
+                      CustomTextFormField(label: "Last Name"),
                       CustomTextFormField(label: "Student Number"),
+                      CustomTextFormField(label: "College email id"),
+                      CustomTextFormField(label: "Contact Number"),
                       SizedBox(height: 20),
                       Row(
                         children: [
@@ -148,6 +151,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ],
                       ),
                       CustomTextFormField(label: "Hackerrank id"),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 120,
+                          child: RecaptchaWidget()),
                       SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(

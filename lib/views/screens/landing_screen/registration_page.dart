@@ -29,7 +29,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/backgroundImg.jpg'),
                 fit: BoxFit.cover,

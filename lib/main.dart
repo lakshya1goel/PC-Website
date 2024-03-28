@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pcwebsite/views/screens/landing_screen/landing_page.dart';
-import 'package:pcwebsite/views/screens/landing_screen/registration_page.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
 
 void main() {

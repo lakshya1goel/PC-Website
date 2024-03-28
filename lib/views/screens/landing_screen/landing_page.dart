@@ -1,8 +1,13 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:pcwebsite/models/registration/social_media_icon.dart';
+import 'package:pcwebsite/services/launch_urls.dart';
+import 'package:pcwebsite/utils/constants/data/social_data.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
+import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import '../../widgets/custom_submit_button.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -95,16 +100,7 @@ class LandingPage extends StatelessWidget {
                           if(screenWidth < 500)
                             const CustomButton(),
                           const SizedBox(height: 50),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(onPressed: (){}, icon: Image.asset('assets/icons/instagram.png')),
-                              const SizedBox(width: 20,),
-                              IconButton(onPressed: (){}, icon: Image.asset('assets/icons/linkedin.png')),
-                              const SizedBox(width: 20,),
-                              IconButton(onPressed: (){}, icon: Image.asset('assets/icons/twitter.png')),
-                            ],
-                          )
+                          SocialMediaIconsRow(socialMediaIcons: socialMediaIcons),
                         ],
                       ),
                     )
@@ -119,24 +115,4 @@ class LandingPage extends StatelessWidget {
   }
 }
 
-class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return SizedBox(
-        height: 40,
-        width: screenWidth < 500 ?screenWidth*0.50:120,
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-          ),
-          child: const Text('Subscribe'),
-        )
-    );
-  }
-}
 

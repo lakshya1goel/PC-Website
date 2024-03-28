@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:pcwebsite/views/widgets/custom_dropdown.dart';
+import 'package:pcwebsite/views/widgets/custom_textform_field.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+  const RegistrationPage({Key? key}) : super(key: key);
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
@@ -11,14 +13,18 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   bool isHosteler = true;
-  List<String> genderList = <String>['Male', 'Female', 'Others'];
+  List<String> genderList = ['Male', 'Female', 'Others'];
   List<String> branchList = <String>['CSE', 'CSE-AIML', 'CSE-DS', 'CS', 'AIML', 'CSIT', 'IT', 'ECE', 'EN', 'ME', 'CE'];
-  List<String> sectionList = <String>['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20'];
-  String gender = "Male";
-  String branch = "CSE";
-  String section = "S1";
+  List<String> sectionList = List.generate(20, (index) => 'S${index + 1}');
+  String gender = 'Male';
+  String branch = 'CSE';
+  String section = 'S1';
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isSmallScreen = size.width < 305;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -39,186 +45,114 @@ class _RegistrationPageState extends State<RegistrationPage> {
           Center(
             child: SingleChildScrollView(
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
+                constraints: BoxConstraints(maxWidth: 600),
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Form(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                              labelText: "Name",
-                            labelStyle: TextStyle(
-                              color: Colors.white,
-                            )
+                      CustomTextFormField(label: "Name"),
+                      CustomTextFormField(label: "College email id"),
+                      CustomTextFormField(label: "Student Number"),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("Branch?", style: TextStyle(color: Colors.white)),
+                          SizedBox(width: 20),
+                          CustomDropDown(val: branch, list: branchList,
+                            onChanged: (String? value) {
+                              setState(() {
+                                branch = value!;
+                              });
+                            },
                           ),
-                        ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                              labelText: "College email id",
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              )
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("Section?", style: TextStyle(color: Colors.white)),
+                          SizedBox(width: 20),
+                          CustomDropDown(val: section, list: sectionList,
+                            onChanged: (String? value) {
+                              setState(() {
+                                section = value!;
+                              });
+                            },
                           ),
-                        ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                              labelText: "Student Number",
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              )
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
+                      SizedBox(height: 20),
+                      if (isSmallScreen) ...[
+                        Row(
                           children: [
-                            const Text("Branch?", style: TextStyle(color: Colors.white),),
-                            const SizedBox(width: 100,),
-                            DropdownButton<String>(
-                              value: branch,
-                              elevation: 16,
-                              dropdownColor: Colors.black12,
-                              style: const TextStyle(color: Colors.white),
-                              onChanged: (String? value) {
-                                setState(() {
-                                  branch = value!;
-                                });
-                              },
-                              items: branchList.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
+                            Text('Hosteler?', style: TextStyle(color: Colors.white)),
+                            SizedBox(width: 20),
                           ],
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            const Text("Section?", style: TextStyle(color: Colors.white),),
-                            const SizedBox(width: 100,),
-                            DropdownButton<String>(
-                              value: section,
-                              elevation: 16,
-                              dropdownColor: Colors.black12,
-                              style: const TextStyle(color: Colors.white),
-                              onChanged: (String? value) {
-                                setState(() {
-                                  section = value!;
-                                });
-                              },
-                              items: sectionList.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
+                      ],
+                      Row(
+                        children: [
+                          if (!isSmallScreen) ...[
+                            Text('Hosteler?', style: TextStyle(color: Colors.white)),
+                            SizedBox(width: 20),
                           ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            const Text('Is Hosteler?', style: TextStyle(color: Colors.white),),
-                            const SizedBox(width: 60,),
-                            Radio(
-                              value: true,
-                              groupValue: isHosteler,
-                              onChanged: (value) {
-                                setState(() {
-                                  isHosteler = value as bool;
-                                });
-                              },
-                            ),
-                            const Text('Yes', style: TextStyle(color: Colors.white),),
-                            const SizedBox(width: 60,),
-                            Radio(
-                              value: false,
-                              groupValue: isHosteler,
-                              onChanged: (value) {
-                                setState(() {
-                                  isHosteler = value as bool;
-                                });
-                              },
-                            ),
-                            const Text('No', style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            const Text("Gender?", style: TextStyle(color: Colors.white),),
-                            const SizedBox(width: 100,),
-                            DropdownButton<String>(
-                              value: gender,
-                              elevation: 16,
-                              dropdownColor: Colors.black12,
-                              style: const TextStyle(color: Colors.white),
-                              onChanged: (String? value) {
-                                setState(() {
-                                  gender = value!;
-                                });
-                              },
-                              items: genderList.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                              labelText: "Hackerrank id",
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              )
+                          Row(
+                            children: [
+                              Radio(
+                                value: true,
+                                groupValue: isHosteler,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isHosteler = value as bool;
+                                  });
+                                },
+                              ),
+                              Text('Yes', style: TextStyle(color: Colors.white)),
+                            ],
                           ),
-                        ),
+                          SizedBox(width: 20),
+                          Row(
+                            children: [
+                              Radio(
+                                value: false,
+                                groupValue: isHosteler,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isHosteler = value as bool;
+                                  });
+                                },
+                              ),
+                              Text('No', style: TextStyle(color: Colors.white)),
+                            ],
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 20,),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("Gender?", style: TextStyle(color: Colors.white)),
+                          SizedBox(width: 20),
+                          CustomDropDown(val: gender, list: genderList,
+                            onChanged: (String? value) {
+                              setState(() {
+                                gender = value!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      CustomTextFormField(label: "Hackerrank id"),
+                      SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(
-                            onPressed: (){},
-                            child: const Text("Register"),
+                          onPressed: () {},
+                          child: Text("Register"),
                         ),
                       ),
                     ],

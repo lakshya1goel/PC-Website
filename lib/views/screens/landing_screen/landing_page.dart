@@ -3,15 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pcwebsite/utils/constants/data/social_data.dart';
-import 'package:pcwebsite/utils/routers/app_routers.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
 import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
+import 'package:pcwebsite/views/widgets/toasts.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import '../../../services/api_services.dart';
 import '../../widgets/custom_submit_button.dart';
 
 class LandingPage extends StatefulWidget {
-
   const LandingPage({super.key});
 
   @override
@@ -19,14 +18,13 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-
   Duration? timeLeft;
   String baseUrl = dotenv.get('API_BASE_URL');
   TextEditingController emailController = TextEditingController();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       fetchData();
     });
     super.initState();
@@ -42,8 +40,8 @@ class _LandingPageState extends State<LandingPage> {
       print('Error fetching data: $e');
     }
   }
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -119,23 +117,32 @@ class _LandingPageState extends State<LandingPage> {
                     SizedBox(
                       width: max(380, screenWidth * 0.2),
                       child: Form(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        autovalidateMode: AutovalidateMode.disabled,
                         key: formKey,
                         child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                CustomInputField(controller: emailController,),
+                                CustomInputField(
+                                  controller: emailController,
+                                ),
                                 const SizedBox(
                                   width: 20,
                                 ),
                                 if (screenWidth >= 500)
                                   CustomButton(
                                     formKey: formKey,
-                                    fn: () {
+                                    fn: () async {
                                       if (formKey.currentState!.validate()) {
-                                        ApiService(baseUrl).subscribeEmail(emailController.text);
+                                        List data = await ApiService(baseUrl)
+                                            .subscribeEmail(emailController.text);
+                                        CustomToasts().showToast(data);
+                                        emailController.text = '';
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                      else{
+                                        CustomToasts().showToast([false,'Enter a valid College mail']);
                                       }
                                     },
                                   )
@@ -145,10 +152,18 @@ class _LandingPageState extends State<LandingPage> {
                             if (screenWidth < 500)
                               CustomButton(
                                 formKey: formKey,
-                                fn: () {
+                                fn: () async {
                                   if (formKey.currentState!.validate()) {
-                                    ApiService(baseUrl).subscribeEmail(emailController.text);
+                                    List data = await ApiService(baseUrl)
+                                        .subscribeEmail(emailController.text);
+                                    CustomToasts().showToast(data);
+                                    emailController.text = '';
+                                    FocusScope.of(context).unfocus();
                                   }
+                                  else{
+                                    CustomToasts().showToast([false,'Enter a valid College mail']);
+                                  }
+
                                 },
                               ),
                             const SizedBox(height: 50),

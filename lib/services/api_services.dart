@@ -52,12 +52,11 @@ class ApiService {
   }
 
   Future<Duration> parseDurationFromAPI() async {
-    var request = http.Request('GET', Uri.parse('${apiUrl}tl'));
-    http.StreamedResponse response = await request.send();
+    final url = Uri.parse('${apiUrl}tl');
+    final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      String jsonString = await response.stream.bytesToString();
-      Map<String, dynamic> data = json.decode(jsonString);
+      final Map<String, dynamic> data = json.decode(response.body);
 
       int days = data['days'] ?? 0;
       int hours = data['hours'] ?? 0;
@@ -70,22 +69,21 @@ class ApiService {
     }
   }
 
-  Future<void> subscribeEmail(String email) async {
-
+  Future subscribeEmail(String email) async {
     String url = "${apiUrl}subscribe";
-    var request = http.Request('POST', Uri.parse(url));
-    request.headers['Content-Type'] = 'application/json';
-    request.body = jsonEncode({'email': email});
-
-    http.StreamedResponse response = await request.send();
+    var response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
 
     if (response.statusCode == 201) {
-      print(await response.stream.bytesToString());
-    } else if(response.statusCode == 400){
-      print(await response.stream.bytesToString());
-    }
-    else{
+      return [true,jsonDecode(response.body)['message']];
+    } else if (response.statusCode == 400) {
+      return [true,jsonDecode(response.body)['message']];
+    } else {
       print(response.reasonPhrase);
+      return [true,response.reasonPhrase];
     }
   }
 

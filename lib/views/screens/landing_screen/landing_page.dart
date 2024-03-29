@@ -1,16 +1,49 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:pcwebsite/models/registration/social_media_icon.dart';
-import 'package:pcwebsite/services/launch_urls.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pcwebsite/utils/constants/data/social_data.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
 import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
+import 'package:pcwebsite/views/widgets/register_now.dart';
+import 'package:pcwebsite/views/widgets/toasts.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import '../../../services/api_services.dart';
 import '../../widgets/custom_submit_button.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  Duration? timeLeft;
+  String baseUrl = dotenv.get('API_BASE_URL');
+  TextEditingController emailController = TextEditingController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchData();
+    });
+    super.initState();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      Duration duration = await ApiService(baseUrl).parseDurationFromAPI();
+      setState(() {
+        timeLeft = duration;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool timerOver = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,35 +65,38 @@ class LandingPage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     Text(
-                      '#include 3.0 Coming Soon',
+                    Text(
+                      timerOver?'Register for #include 3.0':'#include 3.0 Coming Soon',
                       style: TextStyle(
-                        fontSize: max(40,screenWidth*0.05),
+                        fontSize: max(40, screenWidth * 0.05),
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Registration Opens in:',
-                      style: TextStyle(
+                    Text(
+                      timerOver?'':'Registration Opens in:',
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                     SizedBox(height: screenWidth < 500 ?50:100),
+
+                    SizedBox(height: timerOver?20:(screenWidth < 500 ? 50 : 100)),
                     SlideCountdownSeparated(
-                      duration: const Duration(days: 2),
+                      duration: timeLeft??const Duration(days: 100),
                       style: TextStyle(
-                        fontSize: screenWidth<500?screenWidth*0.09:50,
+                        fontSize: screenWidth < 500 ? screenWidth * 0.08 : 50,
                         color: Colors.white,
                       ),
                       separatorStyle: TextStyle(
-                        fontSize: screenWidth<500?screenWidth*0.09:50,
+                        fontSize: screenWidth < 500 ? screenWidth * 0.08 : 50,
                         color: Colors.white,
                       ),
                       decoration: BoxDecoration(
@@ -79,31 +115,74 @@ class LandingPage extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      padding: EdgeInsets.all(max(10,screenWidth*0.015)),
+                      padding: EdgeInsets.all(max(8, screenWidth * 0.015)),
+                      replacement: const RegisterNowButton(),
+                      onDone: (){
+                          setState(() {
+                            timerOver = true;
+                          });
+                      },
                     ),
                     const SizedBox(height: 50),
-                    SizedBox(
-                      width: max(380,screenWidth*0.2),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const CustomInputField(),
-                              const SizedBox(width: 20,),
-                              if(screenWidth >= 500)
-                              const CustomButton()
-                            ],
-                          ),
-                          if(screenWidth < 500)
-                          const SizedBox(height: 30),
-                          if(screenWidth < 500)
-                            const CustomButton(),
-                          const SizedBox(height: 50),
-                          SocialMediaIconsRow(socialMediaIcons: socialMediaIcons),
-                        ],
+                    if(!timerOver)SizedBox(
+                      width: max(380, screenWidth * 0.2),
+                      child: Form(
+                        autovalidateMode: AutovalidateMode.disabled,
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomInputField(
+                                  controller: emailController,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                if (screenWidth >= 500)
+                                  CustomButton(
+                                    formKey: formKey,
+                                    fn: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        List data = await ApiService(baseUrl)
+                                            .subscribeEmail(emailController.text);
+                                        CustomToasts().showToast(data);
+                                        emailController.text = '';
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                      else{
+                                        CustomToasts().showToast([false,'Enter a valid College mail']);
+                                      }
+                                    },
+                                  )
+                              ],
+                            ),
+                            if (screenWidth < 500) const SizedBox(height: 30),
+                            if (screenWidth < 500)
+                              CustomButton(
+                                formKey: formKey,
+                                fn: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    List data = await ApiService(baseUrl)
+                                        .subscribeEmail(emailController.text);
+                                    CustomToasts().showToast(data);
+                                    emailController.text = '';
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                  else{
+                                    CustomToasts().showToast([false,'Enter a valid College mail']);
+                                  }
+
+                                },
+                              ),
+                            const SizedBox(height: 50),
+                          ],
+                        ),
                       ),
-                    )
+                    ),
+                    SocialMediaIconsRow(
+                        socialMediaIcons: socialMediaIcons),
                   ],
                 ),
               ),
@@ -114,5 +193,3 @@ class LandingPage extends StatelessWidget {
     );
   }
 }
-
-

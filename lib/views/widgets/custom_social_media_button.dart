@@ -12,15 +12,12 @@ class SocialMediaIconsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: socialMediaIcons
-          .map((icon) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: IconButton(
-          onPressed: () {
-            launchURL(icon.url);
-          },
-          icon: Image.asset(icon.iconPath),
-        ),
-      ))
+          .map((icon) => IconButton(
+            onPressed: () {
+              launchURL(icon.url);
+            },
+            icon: Image.asset(icon.iconPath),
+          ))
           .toList(),
     );
   }

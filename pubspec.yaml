@@ -39,6 +39,9 @@ dependencies:
   go_router: ^13.2.1
   http: ^1.2.0
   flutter_dotenv: ^5.1.0
+  fluttertoast: ^8.2.4
+  simple_animated_button: ^0.0.9
+
 
 dev_dependencies:
   flutter_test:

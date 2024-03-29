@@ -252,7 +252,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 isHosteler,
                                 hackerrankId.text.trim(),
                                 isContestOnly,
-                                recaptchaToken);
+                                recaptchaToken,
+                                universityRollNo.text.trim(),
+                            );
                           },
                           child: Text("Register"),
                         ),

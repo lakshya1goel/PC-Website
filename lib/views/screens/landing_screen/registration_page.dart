@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:pcwebsite/views/screens/landing_screen/recaptcha.dart';
 import 'package:pcwebsite/views/widgets/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/custom_textform_field.dart';
 
@@ -19,11 +20,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String gender = 'Male';
   String branch = 'CSE';
   String section = 'S1';
+  String registeredFor = "Both";
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isSmallScreen = size.width < 305;
+    final isSmallScreen = size.width < 460;
 
     return Scaffold(
       body: Stack(
@@ -56,13 +58,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextFormField(label: "Name"),
-                      CustomTextFormField(label: "College email id"),
+                      CustomTextFormField(label: "First Name"),
+                      CustomTextFormField(label: "Last Name"),
                       CustomTextFormField(label: "Student Number"),
+                      CustomTextFormField(label: "University Roll No."),
+                      CustomTextFormField(label: "College email id"),
+                      CustomTextFormField(label: "Contact Number"),
+                      CustomTextFormField(label: "Hackerrank id"),
                       SizedBox(height: 20),
                       Row(
                         children: [
-                          Text("Branch?", style: TextStyle(color: Colors.white)),
+                          Text("Branch", style: TextStyle(color: Colors.white)),
                           SizedBox(width: 20),
                           CustomDropDown(val: branch, list: branchList,
                             onChanged: (String? value) {
@@ -76,7 +82,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       SizedBox(height: 20),
                       Row(
                         children: [
-                          Text("Section?", style: TextStyle(color: Colors.white)),
+                          Text("Section", style: TextStyle(color: Colors.white)),
                           SizedBox(width: 20),
                           CustomDropDown(val: section, list: sectionList,
                             onChanged: (String? value) {
@@ -88,10 +94,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ],
                       ),
                       SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("Gender", style: TextStyle(color: Colors.white)),
+                          SizedBox(width: 20),
+                          CustomDropDown(val: gender, list: genderList,
+                            onChanged: (String? value) {
+                              setState(() {
+                                gender = value!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
                       if (isSmallScreen) ...[
                         Row(
                           children: [
-                            Text('Hosteler?', style: TextStyle(color: Colors.white)),
+                            Text('Hosteler', style: TextStyle(color: Colors.white)),
                             SizedBox(width: 20),
                           ],
                         ),
@@ -99,7 +119,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       Row(
                         children: [
                           if (!isSmallScreen) ...[
-                            Text('Hosteler?', style: TextStyle(color: Colors.white)),
+                            Text('Hosteler', style: TextStyle(color: Colors.white)),
                             SizedBox(width: 20),
                           ],
                           Row(
@@ -134,20 +154,70 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ],
                       ),
                       SizedBox(height: 20),
+                      if (isSmallScreen) ...[
+                        Row(
+                          children: [
+                            Text('Register For', style: TextStyle(color: Colors.white)),
+                            SizedBox(width: 20),
+                          ],
+                        ),
+                      ],
                       Row(
                         children: [
-                          Text("Gender?", style: TextStyle(color: Colors.white)),
+                          if (!isSmallScreen) ...[
+                            Text('Register For', style: TextStyle(color: Colors.white)),
+                            SizedBox(width: 20),
+                          ],
+                          Row(
+                            children: [
+                              Radio(
+                                value: "Workshop",
+                                groupValue: registeredFor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    registeredFor = value as String;
+                                  });
+                                },
+                              ),
+                              Text('Workshop', style: TextStyle(color: Colors.white)),
+                            ],
+                          ),
                           SizedBox(width: 20),
-                          CustomDropDown(val: gender, list: genderList,
-                            onChanged: (String? value) {
-                              setState(() {
-                                gender = value!;
-                              });
-                            },
+                          Row(
+                            children: [
+                              Radio(
+                                value: "Contest",
+                                groupValue: registeredFor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    registeredFor = value as String;
+                                  });
+                                },
+                              ),
+                              Text('Contest', style: TextStyle(color: Colors.white)),
+                            ],
+                          ),
+                          SizedBox(width: 20),
+                          Row(
+                            children: [
+                              Radio(
+                                value: "Both",
+                                groupValue: registeredFor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    registeredFor = value as String;
+                                  });
+                                },
+                              ),
+                              Text('Both', style: TextStyle(color: Colors.white)),
+                            ],
                           ),
                         ],
                       ),
-                      CustomTextFormField(label: "Hackerrank id"),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 120,
+                          child: RecaptchaWidget()),
                       SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(

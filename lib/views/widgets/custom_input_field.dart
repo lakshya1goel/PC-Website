@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:pcwebsite/controllers/landing_page/validations.dart';
 
 class CustomInputField extends StatelessWidget {
-  const CustomInputField({super.key});
+  final TextEditingController controller;
+  const CustomInputField({super.key,required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: TextFormField(
+        controller: controller,
         style: const TextStyle(color: Colors.white), // Text color
         decoration: InputDecoration(
           hintText: 'Email Address',

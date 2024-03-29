@@ -1,18 +1,49 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:pcwebsite/models/registration/social_media_icon.dart';
-import 'package:pcwebsite/services/launch_urls.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pcwebsite/utils/constants/data/social_data.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
 import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+import '../../../services/api_services.dart';
 import '../../widgets/custom_submit_button.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+
+  Duration? timeLeft;
+  String baseUrl = dotenv.get('API_BASE_URL');
+  TextEditingController emailController = TextEditingController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      fetchData();
+    });
+    super.initState();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      Duration duration = await ApiService(baseUrl).parseDurationFromAPI();
+      setState(() {
+        timeLeft = duration;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  LandingPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +88,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     SizedBox(height: screenWidth < 500 ? 50 : 100),
                     SlideCountdownSeparated(
-                      duration: const Duration(days: 2),
+                      duration: timeLeft ?? const Duration(days: 100),
                       style: TextStyle(
                         fontSize: screenWidth < 500 ? screenWidth * 0.08 : 50,
                         color: Colors.white,
@@ -95,7 +126,7 @@ class LandingPage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const CustomInputField(),
+                                CustomInputField(controller: emailController,),
                                 const SizedBox(
                                   width: 20,
                                 ),
@@ -104,7 +135,7 @@ class LandingPage extends StatelessWidget {
                                     formKey: formKey,
                                     fn: () {
                                       if (formKey.currentState!.validate()) {
-                                        router.go('/register');
+                                        ApiService(baseUrl).subscribeEmail(emailController.text);
                                       }
                                     },
                                   )
@@ -116,7 +147,7 @@ class LandingPage extends StatelessWidget {
                                 formKey: formKey,
                                 fn: () {
                                   if (formKey.currentState!.validate()) {
-                                    router.go('/register');
+                                    ApiService(baseUrl).subscribeEmail(emailController.text);
                                   }
                                 },
                               ),

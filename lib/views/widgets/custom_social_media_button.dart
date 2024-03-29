@@ -10,7 +10,7 @@ class SocialMediaIconsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: socialMediaIcons
           .map((icon) => IconButton(
             onPressed: () {

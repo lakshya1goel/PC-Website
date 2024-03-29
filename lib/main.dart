@@ -4,7 +4,7 @@ import 'package:pcwebsite/utils/routers/app_routers.dart';
 
 Future main() async {
   await dotenv.load(fileName: '.env');
-  
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

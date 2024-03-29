@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pcwebsite/utils/constants/data/social_data.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
 import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
+import 'package:pcwebsite/views/widgets/register_now.dart';
 import 'package:pcwebsite/views/widgets/toasts.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import '../../../services/api_services.dart';
@@ -42,6 +43,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool timerOver = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +65,11 @@ class _LandingPageState extends State<LandingPage> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '#include 3.0 Coming Soon',
+                      timerOver?'Register for #include 3.0':'#include 3.0 Coming Soon',
                       style: TextStyle(
                         fontSize: max(40, screenWidth * 0.05),
                         color: Colors.white,
@@ -75,18 +78,19 @@ class _LandingPageState extends State<LandingPage> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Registration Opens in:',
-                      style: TextStyle(
+                    Text(
+                      timerOver?'':'Registration Opens in:',
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: screenWidth < 500 ? 50 : 100),
+
+                    SizedBox(height: timerOver?20:(screenWidth < 500 ? 50 : 100)),
                     SlideCountdownSeparated(
-                      duration: timeLeft ?? const Duration(days: 100),
+                      duration: timeLeft??const Duration(days: 100),
                       style: TextStyle(
                         fontSize: screenWidth < 500 ? screenWidth * 0.08 : 50,
                         color: Colors.white,
@@ -112,9 +116,15 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                       ),
                       padding: EdgeInsets.all(max(8, screenWidth * 0.015)),
+                      replacement: const RegisterNowButton(),
+                      onDone: (){
+                          setState(() {
+                            timerOver = true;
+                          });
+                      },
                     ),
                     const SizedBox(height: 50),
-                    SizedBox(
+                    if(!timerOver)SizedBox(
                       width: max(380, screenWidth * 0.2),
                       child: Form(
                         autovalidateMode: AutovalidateMode.disabled,
@@ -167,12 +177,12 @@ class _LandingPageState extends State<LandingPage> {
                                 },
                               ),
                             const SizedBox(height: 50),
-                            SocialMediaIconsRow(
-                                socialMediaIcons: socialMediaIcons),
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    SocialMediaIconsRow(
+                        socialMediaIcons: socialMediaIcons),
                   ],
                 ),
               ),

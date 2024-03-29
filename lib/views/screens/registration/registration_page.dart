@@ -1,9 +1,10 @@
 import 'dart:ui';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
-import 'package:pcwebsite/views/screens/landing_screen/recaptcha.dart';
-import 'package:pcwebsite/views/widgets/custom_dropdown.dart';
-import 'package:pcwebsite/views/widgets/custom_textform_field.dart';
+import 'package:pcwebsite/services/api_services.dart';
+import 'package:pcwebsite/views/widgets/registration/recaptcha.dart';
+import 'package:pcwebsite/views/widgets/registration/custom_dropdown.dart';
+import 'package:pcwebsite/views/widgets/registration/custom_textform_field.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -14,13 +15,23 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   bool isHosteler = true;
+  bool isContestOnly = false;
   List<String> genderList = ['Male', 'Female', 'Others'];
   List<String> branchList = <String>['CSE', 'CSE-AIML', 'CSE-DS', 'CS', 'AIML', 'CSIT', 'IT', 'ECE', 'EN', 'ME', 'CE'];
   List<String> sectionList = List.generate(20, (index) => 'S${index + 1}');
   String gender = 'Male';
   String branch = 'CSE';
   String section = 'S1';
-  String registeredFor = "Both";
+  String registeredFor = "Workshop";
+  String recaptchaToken = "";
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController studentNumber = TextEditingController();
+  TextEditingController universityRollNo = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController contactNo = TextEditingController();
+  TextEditingController hackerrankId = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +69,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextFormField(label: "First Name"),
-                      CustomTextFormField(label: "Last Name"),
-                      CustomTextFormField(label: "Student Number"),
-                      CustomTextFormField(label: "University Roll No."),
-                      CustomTextFormField(label: "College email id"),
-                      CustomTextFormField(label: "Contact Number"),
-                      CustomTextFormField(label: "Hackerrank id"),
+                      CustomTextFormField(label: "First Name", controller: firstName,),
+                      CustomTextFormField(label: "Last Name", controller: lastName,),
+                      CustomTextFormField(label: "Student Number", controller: studentNumber,),
+                      CustomTextFormField(label: "University Roll No.", controller: universityRollNo,),
+                      CustomTextFormField(label: "College email id", controller: email,),
+                      CustomTextFormField(label: "Contact Number", controller: contactNo,),
+                      CustomTextFormField(label: "Hackerrank id", controller: hackerrankId,),
                       SizedBox(height: 20),
                       Row(
                         children: [
@@ -217,11 +228,32 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       SizedBox(height: 20),
                       SizedBox(
                         height: 120,
-                          child: RecaptchaWidget()),
+                          child: RecaptchaWidget(
+                            onTokenReceived: (token) {
+                              recaptchaToken = token;
+                            },
+                          )),
                       SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if(registeredFor == "Contest") {
+                              isContestOnly = true;
+                            }
+                            ApiService(dotenv.env['API_BASE_URL']!).registerUser(
+                                firstName.text.trim(),
+                                lastName.text.trim(),
+                                contactNo.text.trim(),
+                                gender,
+                                email.text.trim(),
+                                studentNumber.text.trim(),
+                                branch,
+                                section,
+                                isHosteler,
+                                hackerrankId.text.trim(),
+                                isContestOnly,
+                                recaptchaToken);
+                          },
                           child: Text("Register"),
                         ),
                       ),

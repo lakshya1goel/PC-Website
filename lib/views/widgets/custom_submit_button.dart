@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pcwebsite/utils/routers/app_routers.dart';
 
 class CustomButton extends StatefulWidget {
-  const CustomButton({Key? key}) : super(key: key);
+  final GlobalKey<FormState> formKey;
+  final Function fn;
+  const CustomButton({super.key, required this.formKey, required this.fn});
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -21,7 +22,8 @@ class _CustomButtonState extends State<CustomButton> {
           _isButtonDisabled = false;
         });
       });
-      router.go('/register');
+      widget.fn();
+      // router.go('/register');
     }
   }
 

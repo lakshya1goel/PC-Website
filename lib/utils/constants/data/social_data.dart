@@ -9,8 +9,4 @@ List<SocialMediaIcon> socialMediaIcons = [
     url: 'https://www.linkedin.com/company/programming-club-akgec/mycompany/',
     iconPath: 'assets/icons/linkedin.png',
   ),
-  SocialMediaIcon(
-    url: 'https://twitter.com/programmingclub.akgec/',
-    iconPath: 'assets/icons/twitter.png',
-  ),
 ];

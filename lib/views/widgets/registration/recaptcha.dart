@@ -3,6 +3,9 @@ import 'dart:ui_web' as ui;
 import 'dart:html' as html;
 
 class RecaptchaWidget extends StatefulWidget {
+  final void Function(String) onTokenReceived;
+  RecaptchaWidget({required this.onTokenReceived});
+
   @override
   _RecaptchaWidgetState createState() => _RecaptchaWidgetState();
 }
@@ -23,7 +26,7 @@ class _RecaptchaWidgetState extends State<RecaptchaWidget> {
     );
     html.window.onMessage.listen((msg) {
       String token = msg.data;
-      print('Token received: $token');
+      widget.onTokenReceived(token);
     });
     super.initState();
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pcwebsite/views/screens/landing_screen/landing_page.dart';
-import 'package:pcwebsite/views/screens/landing_screen/registration_page.dart';
+import 'package:pcwebsite/views/screens/registration/registration_page.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[

@@ -10,29 +10,32 @@ class RegisterNowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return ElevatedLayerButton(
-      onClick: () {
-        router.go('/register');
-      },
-      buttonHeight: 60,
-      buttonWidth: min(screenWidth*0.5,270),
-      animationDuration: const Duration(milliseconds: 200),
-      animationCurve: Curves.ease,
-      topDecoration: BoxDecoration(
-        color: Colors.amber,
-        border: Border.all(),
-      ),
-      topLayerChild: const Text(
-        "Register Now -> ",
-        style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.bold
+    return InkWell(
+      onTap: (){},
+      child: ElevatedLayerButton(
+        onClick: () {
+          router.go('/register');
+        },
+        buttonHeight: 60,
+        buttonWidth: min(screenWidth*0.5,270),
+        animationDuration: const Duration(milliseconds: 200),
+        animationCurve: Curves.ease,
+        topDecoration: BoxDecoration(
+          color: Colors.amber,
+          border: Border.all(),
         ),
-        textAlign: TextAlign.center,
-      ),
-      baseDecoration: BoxDecoration(
-        color: Colors.green,
-        border: Border.all(),
+        topLayerChild: const Text(
+          "Register Now -> ",
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold
+          ),
+          textAlign: TextAlign.center,
+        ),
+        baseDecoration: BoxDecoration(
+          color: Colors.green,
+          border: Border.all(),
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:pcwebsite/services/api_services.dart';
+import 'package:pcwebsite/utils/routers/app_routers.dart';
 import 'package:pcwebsite/views/widgets/registration/recaptcha.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_textform_field.dart';
@@ -243,6 +244,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       SizedBox(height: 20),
                       Center(
                           child: CustomButton(
+                            title: 'Register',
                             formKey: formKey,
                             fn: () async {
                               if (formKey.currentState!.validate()) {
@@ -271,7 +273,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   return;
                                 }
                                 if (!Validator().validHackerrankId(hackerrankId.text.trim())) {
-                                  CustomToasts().showToast([false, 'hHackerrank Id can not be empty']);
+                                  CustomToasts().showToast([false, 'Hackerrank Id can not be empty']);
                                   return;
                                 }
 
@@ -294,6 +296,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 var responseBody = jsonDecode(response.body);
                                 if (response.statusCode == 201) {
                                   CustomToasts().showToast([true, responseBody['message']]);
+                                  router.go('/thankyou');
                                 }
                                 else {
                                 CustomToasts().showToast([false, responseBody['message']]);

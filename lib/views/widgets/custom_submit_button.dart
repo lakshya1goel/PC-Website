@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
+  final String? title;
   final Function fn;
-  const CustomButton({super.key, required this.formKey, required this.fn});
+  const CustomButton({super.key, required this.formKey, required this.fn,this.title});
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -36,9 +37,9 @@ class _CustomButtonState extends State<CustomButton> {
       child: ElevatedButton(
         onPressed: _isButtonDisabled ? null : _onPressed,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
+          backgroundColor: WidgetStateProperty.all<Color>(
               _isButtonDisabled ? Colors.grey : Colors.white),
-          foregroundColor: MaterialStateProperty.all<Color>(
+          foregroundColor: WidgetStateProperty.all<Color>(
               _isButtonDisabled ? Colors.black54 : Colors.black),
         ),
         child: Stack(
@@ -46,7 +47,7 @@ class _CustomButtonState extends State<CustomButton> {
           children: [
             Visibility(
               visible: !_isButtonDisabled,
-              child: const Text('Subscribe'),
+              child: Text(widget.title ?? 'Subscribe'),
             ),
             Visibility(
               visible: _isButtonDisabled,

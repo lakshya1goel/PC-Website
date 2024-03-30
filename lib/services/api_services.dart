@@ -7,7 +7,7 @@ class ApiService {
   final String apiUrl;
   ApiService(this.apiUrl);
 
-  Future<Map<String, dynamic>> registerUser(
+  Future registerUser(
       String firstName,
       String lastName,
       String mobNum,
@@ -19,13 +19,14 @@ class ApiService {
       bool isHosteler,
       String hackerrankId,
       bool isContestOnly,
-      String recaptchaToken
+      String recaptchaToken,
+      String universityRollNo,
       ) async {
     var headers = {
       'Content-Type': 'application/json',
       'Recaptcha-Token': recaptchaToken
     };
-    var url = Uri.parse('$apiUrl/register');
+    var url = Uri.parse('${apiUrl}register');
     var body = jsonEncode({
       "first_name": firstName,
       "last_name": lastName,
@@ -37,18 +38,21 @@ class ApiService {
       "section": section,
       "is_hosteler": isHosteler,
       "hacker_rank_id": hackerrankId,
-      "is_contest_only": isContestOnly
+      "is_contest_only": isContestOnly,
+      "university_roll_number": universityRollNo,
     });
 
     var response = await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 201) {
       print(response.body);
-      return jsonDecode(response.body);
+      // return jsonDecode(response.body);
+      return response;
     }
     else {
-      print(response.body);
-      throw Exception('Failed to register user');
+      // print(response.body);
+      return response;
+      // throw Exception('Failed to register user');
     }
   }
 

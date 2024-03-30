@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,10 @@ import 'package:pcwebsite/services/api_services.dart';
 import 'package:pcwebsite/views/widgets/registration/recaptcha.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_textform_field.dart';
+
+import '../../../controllers/registration/validations.dart';
+import '../../widgets/custom_submit_button.dart';
+import '../../widgets/toasts.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -31,7 +36,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController email = TextEditingController();
   TextEditingController contactNo = TextEditingController();
   TextEditingController hackerrankId = TextEditingController();
-
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Form(
+                  autovalidateMode: AutovalidateMode.disabled,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -235,29 +242,68 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           )),
                       SizedBox(height: 20),
                       Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if(registeredFor == "Contest") {
-                              isContestOnly = true;
+                          child: CustomButton(
+                            formKey: formKey,
+                            fn: () async {
+                              if (formKey.currentState!.validate()) {
+                                if (!Validator().validateName(firstName.text.trim())) {
+                                  CustomToasts().showToast([false, 'Enter a valid first name']);
+                                  return;
+                                }
+                                if (!Validator().validateName(lastName.text.trim())) {
+                                  CustomToasts().showToast([false, 'Enter a valid last name']);
+                                  return;
+                                }
+                                if (!Validator().validateStudentNum(studentNumber.text.trim())) {
+                                  CustomToasts().showToast([false, 'Enter a valid student number']);
+                                  return;
+                                }
+                                if (!Validator().validateUniversityRollNum(universityRollNo.text.trim())) {
+                                  CustomToasts().showToast([false, 'Enter a valid university roll number']);
+                                  return;
+                                }
+                                if (!Validator().validateCollegeEmail(email.text.trim())) {
+                                  CustomToasts().showToast([false, 'Enter a valid College email']);
+                                  return;
+                                }
+                                if (!Validator().validateMobileNum(contactNo.text.trim())) {
+                                  CustomToasts().showToast([false, 'Enter a valid mobile number']);
+                                  return;
+                                }
+                                if (!Validator().validHackerrankId(hackerrankId.text.trim())) {
+                                  CustomToasts().showToast([false, 'hHackerrank Id can not be empty']);
+                                  return;
+                                }
+
+                                var response = await ApiService(
+                                    dotenv.env['API_BASE_URL']!).registerUser(
+                                  firstName.text.trim(),
+                                  lastName.text.trim(),
+                                  contactNo.text.trim(),
+                                  gender,
+                                  email.text.trim(),
+                                  studentNumber.text.trim(),
+                                  branch,
+                                  section,
+                                  isHosteler,
+                                  hackerrankId.text.trim(),
+                                  isContestOnly,
+                                  recaptchaToken,
+                                  universityRollNo.text.trim(),
+                                );
+                                var responseBody = jsonDecode(response.body);
+                                if (response.statusCode == 201) {
+                                  CustomToasts().showToast([true, responseBody['message']]);
+                                }
+                                else {
+                                CustomToasts().showToast([false, responseBody['message']]);
+                              }
+                              FocusScope.of(context).unfocus();
                             }
-                            ApiService(dotenv.env['API_BASE_URL']!).registerUser(
-                                firstName.text.trim(),
-                                lastName.text.trim(),
-                                contactNo.text.trim(),
-                                gender,
-                                email.text.trim(),
-                                studentNumber.text.trim(),
-                                branch,
-                                section,
-                                isHosteler,
-                                hackerrankId.text.trim(),
-                                isContestOnly,
-                                recaptchaToken,
-                                universityRollNo.text.trim(),
-                            );
-                          },
-                          child: Text("Register"),
-                        ),
+                            else {
+                              CustomToasts().showToast([false, 'Enter all required fields']);
+                            }},
+                          ),
                       ),
                     ],
                   ),

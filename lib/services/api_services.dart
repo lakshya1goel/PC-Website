@@ -68,6 +68,11 @@ class ApiService {
       int minutes = data['minutes'] ?? 0;
       int seconds = data['seconds'] ?? 0;
 
+      days = days < 0 ? 0 : days;
+      hours = hours < 0 ? 0 : hours;
+      minutes = minutes < 0 ? 0 : minutes;
+      seconds = seconds < 0 ? 0 : seconds;
+
       return Duration(days: days, hours: hours, minutes: minutes, seconds: seconds);
     } else {
       throw Exception('Failed to fetch duration: ${response.reasonPhrase}');

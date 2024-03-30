@@ -34,8 +34,6 @@ final GoRouter router = GoRouter(
 );
 
 String? _redirect(BuildContext context, GoRouterState state) {
-  if (!canGoFurther) {
-    return '/';
-  }
-  return null;
+  if(canGoFurther) return null;
+  return '/';
 }

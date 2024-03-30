@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:pcwebsite/utils/constants/data/const.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
 import 'package:simple_animated_button/simple_animated_button.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class RegisterNowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    canGoFurther = true;
     double screenWidth = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: (){},

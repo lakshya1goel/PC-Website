@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
 
 
 class ApiService {
@@ -46,13 +46,10 @@ class ApiService {
 
     if (response.statusCode == 201) {
       print(response.body);
-      // return jsonDecode(response.body);
       return response;
     }
     else {
-      // print(response.body);
       return response;
-      // throw Exception('Failed to register user');
     }
   }
 
@@ -80,11 +77,15 @@ class ApiService {
   }
 
   Future subscribeEmail(String email) async {
+    String? token = await generateToken() ?? 'NULL';
     String url = "${apiUrl}subscribe";
     var response = await http.post(
       Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email}),
+      headers:{
+        'Content-Type': 'application/json',
+        'Recaptcha-Token': token ?? ''
+      },
+      body: jsonEncode({'email': email,}),
     );
 
     if (response.statusCode == 201) {
@@ -95,6 +96,11 @@ class ApiService {
       print(response.reasonPhrase);
       return [true,response.reasonPhrase];
     }
+  }
+
+  generateToken() async {
+    String? token = await GRecaptchaV3.execute('submit');
+    return token;
   }
 
 }

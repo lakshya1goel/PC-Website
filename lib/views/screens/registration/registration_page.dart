@@ -4,10 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:pcwebsite/services/api_services.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
-import 'package:pcwebsite/views/widgets/registration/recaptcha.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_textform_field.dart';
-
 import '../../../controllers/registration/validations.dart';
 import '../../widgets/custom_submit_button.dart';
 import '../../widgets/toasts.dart';
@@ -234,14 +232,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      SizedBox(
-                        height: 120,
-                          child: RecaptchaWidget(
-                            onTokenReceived: (token) {
-                              recaptchaToken = token;
-                            },
-                          )),
-                      const SizedBox(height: 20),
                       Center(
                           child: CustomButton(
                             title: 'Register',
@@ -276,7 +266,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   CustomToasts().showToast([false, 'Hackerrank Id can not be empty']);
                                   return;
                                 }
-
+                                String token = await ApiService(dotenv.env['API_BASE_URL']!).generateToken();
+                                recaptchaToken = token;
                                 var response = await ApiService(
                                     dotenv.env['API_BASE_URL']!).registerUser(
                                   firstName.text.trim(),

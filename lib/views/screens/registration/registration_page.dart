@@ -4,10 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:pcwebsite/services/api_services.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
-import 'package:pcwebsite/views/widgets/registration/recaptcha.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_textform_field.dart';
-
 import '../../../controllers/registration/validations.dart';
 import '../../widgets/custom_submit_button.dart';
 import '../../widgets/toasts.dart';
@@ -64,9 +62,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
           Center(
             child: SingleChildScrollView(
               child: Container(
-                constraints: BoxConstraints(maxWidth: 600),
-                margin: EdgeInsets.all(20),
-                padding: EdgeInsets.all(20),
+                constraints: const BoxConstraints(maxWidth: 600),
+                margin: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15.0),
@@ -84,11 +82,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       CustomTextFormField(label: "College email id", controller: email,),
                       CustomTextFormField(label: "Contact Number", controller: contactNo,),
                       CustomTextFormField(label: "Hackerrank id", controller: hackerrankId,),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
-                          Text("Branch", style: TextStyle(color: Colors.white)),
-                          SizedBox(width: 20),
+                          const Text("Branch", style: TextStyle(color: Colors.white)),
+                          const SizedBox(width: 20),
                           CustomDropDown(val: branch, list: branchList,
                             onChanged: (String? value) {
                               setState(() {
@@ -98,11 +96,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
-                          Text("Section", style: TextStyle(color: Colors.white)),
-                          SizedBox(width: 20),
+                          const Text("Section", style: TextStyle(color: Colors.white)),
+                          const SizedBox(width: 20),
                           CustomDropDown(val: section, list: sectionList,
                             onChanged: (String? value) {
                               setState(() {
@@ -112,11 +110,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
-                          Text("Gender", style: TextStyle(color: Colors.white)),
-                          SizedBox(width: 20),
+                          const Text("Gender", style: TextStyle(color: Colors.white)),
+                          const SizedBox(width: 20),
                           CustomDropDown(val: gender, list: genderList,
                             onChanged: (String? value) {
                               setState(() {
@@ -126,9 +124,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       if (isSmallScreen) ...[
-                        Row(
+                        const Row(
                           children: [
                             Text('Hosteler', style: TextStyle(color: Colors.white)),
                             SizedBox(width: 20),
@@ -138,8 +136,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       Row(
                         children: [
                           if (!isSmallScreen) ...[
-                            Text('Hosteler', style: TextStyle(color: Colors.white)),
-                            SizedBox(width: 20),
+                            const Text('Hosteler', style: TextStyle(color: Colors.white)),
+                            const SizedBox(width: 20),
                           ],
                           Row(
                             children: [
@@ -152,10 +150,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   });
                                 },
                               ),
-                              Text('Yes', style: TextStyle(color: Colors.white)),
+                              const Text('Yes', style: TextStyle(color: Colors.white)),
                             ],
                           ),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                           Row(
                             children: [
                               Radio(
@@ -167,14 +165,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   });
                                 },
                               ),
-                              Text('No', style: TextStyle(color: Colors.white)),
+                              const Text('No', style: TextStyle(color: Colors.white)),
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       if (isSmallScreen) ...[
-                        Row(
+                        const Row(
                           children: [
                             Text('Register For', style: TextStyle(color: Colors.white)),
                             SizedBox(width: 20),
@@ -184,8 +182,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       Row(
                         children: [
                           if (!isSmallScreen) ...[
-                            Text('Register For', style: TextStyle(color: Colors.white)),
-                            SizedBox(width: 20),
+                            const Text('Register For', style: TextStyle(color: Colors.white)),
+                            const SizedBox(width: 20),
                           ],
                           Row(
                             children: [
@@ -198,10 +196,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   });
                                 },
                               ),
-                              Text('Workshop', style: TextStyle(color: Colors.white)),
+                              const Text('Workshop', style: TextStyle(color: Colors.white)),
                             ],
                           ),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                           Row(
                             children: [
                               Radio(
@@ -213,10 +211,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   });
                                 },
                               ),
-                              Text('Contest', style: TextStyle(color: Colors.white)),
+                              const Text('Contest', style: TextStyle(color: Colors.white)),
                             ],
                           ),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                           Row(
                             children: [
                               Radio(
@@ -228,20 +226,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   });
                                 },
                               ),
-                              Text('Both', style: TextStyle(color: Colors.white)),
+                              const Text('Both', style: TextStyle(color: Colors.white)),
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
-                      SizedBox(
-                        height: 120,
-                          child: RecaptchaWidget(
-                            onTokenReceived: (token) {
-                              recaptchaToken = token;
-                            },
-                          )),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Center(
                           child: CustomButton(
                             title: 'Register',
@@ -276,7 +266,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   CustomToasts().showToast([false, 'Hackerrank Id can not be empty']);
                                   return;
                                 }
-
+                                String token = await ApiService(dotenv.env['API_BASE_URL']!).generateToken();
+                                recaptchaToken = token;
                                 var response = await ApiService(
                                     dotenv.env['API_BASE_URL']!).registerUser(
                                   firstName.text.trim(),
@@ -295,7 +286,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 );
                                 var responseBody = jsonDecode(response.body);
                                 if (response.statusCode == 201) {
+                                  firstName.dispose();lastName.dispose();contactNo.dispose();
+                                  email.dispose();studentNumber.dispose();hackerrankId.dispose();
+                                  universityRollNo.dispose();
                                   CustomToasts().showToast([true, responseBody['message']]);
+
                                   router.go('/thankyou');
                                 }
                                 else {

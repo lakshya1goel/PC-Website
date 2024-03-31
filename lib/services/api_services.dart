@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
 
 
 class ApiService {
@@ -46,13 +46,10 @@ class ApiService {
 
     if (response.statusCode == 201) {
       print(response.body);
-      // return jsonDecode(response.body);
       return response;
     }
     else {
-      // print(response.body);
       return response;
-      // throw Exception('Failed to register user');
     }
   }
 
@@ -68,6 +65,11 @@ class ApiService {
       int minutes = data['minutes'] ?? 0;
       int seconds = data['seconds'] ?? 0;
 
+      days = days < 0 ? 0 : days;
+      hours = hours < 0 ? 0 : hours;
+      minutes = minutes < 0 ? 0 : minutes;
+      seconds = seconds < 0 ? 0 : seconds;
+
       return Duration(days: days, hours: hours, minutes: minutes, seconds: seconds);
     } else {
       throw Exception('Failed to fetch duration: ${response.reasonPhrase}');
@@ -75,11 +77,15 @@ class ApiService {
   }
 
   Future subscribeEmail(String email) async {
+    String? token = await generateToken() ?? 'NULL';
     String url = "${apiUrl}subscribe";
     var response = await http.post(
       Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email}),
+      headers:{
+        'Content-Type': 'application/json',
+        'Recaptcha-Token': token ?? ''
+      },
+      body: jsonEncode({'email': email,}),
     );
 
     if (response.statusCode == 201) {
@@ -90,6 +96,11 @@ class ApiService {
       print(response.reasonPhrase);
       return [true,response.reasonPhrase];
     }
+  }
+
+  generateToken() async {
+    String? token = await GRecaptchaV3.execute('submit');
+    return token;
   }
 
 }

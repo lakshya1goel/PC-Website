@@ -43,6 +43,7 @@ dependencies:
   simple_animated_button: ^0.0.9
   lottie: ^3.1.0
   url_strategy: ^0.2.0
+  g_recaptcha_v3: ^0.0.6
 
 
 dev_dependencies:
@@ -72,7 +73,6 @@ flutter:
     - assets/thank_you.png
     - assets/backgroundImg.jpg
     - assets/icons/
-    - html/
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

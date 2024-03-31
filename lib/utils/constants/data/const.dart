@@ -1,1 +1,1 @@
-bool canGoFurther = true;
+bool canGoFurther = false;

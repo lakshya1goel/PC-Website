@@ -64,9 +64,7 @@ class _LandingPageState extends State<LandingPage> {
                       future: fetchData(),
                       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                         if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
-                          Duration timeLeft = snapshot.data;
-                          // Duration timeLeft = Duration(seconds: 5);
-                          bool registrationReady = timeLeft.inSeconds > 0;
+                          Duration timeLeft = snapshot.data;bool registrationReady = timeLeft.inSeconds > 0;
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,

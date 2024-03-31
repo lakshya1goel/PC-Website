@@ -286,7 +286,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 );
                                 var responseBody = jsonDecode(response.body);
                                 if (response.statusCode == 201) {
+                                  firstName.dispose();lastName.dispose();contactNo.dispose();
+                                  email.dispose();studentNumber.dispose();hackerrankId.dispose();
+                                  universityRollNo.dispose();
                                   CustomToasts().showToast([true, responseBody['message']]);
+
                                   router.go('/thankyou');
                                 }
                                 else {

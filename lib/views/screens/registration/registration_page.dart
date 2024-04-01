@@ -76,13 +76,55 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextFormField(label: "First Name", controller: firstName,),
+                      CustomTextFormField(label: "First Name", controller: firstName,validator: (text){
+                        if(Validator().validateName(text!)){
+                          return null;
+                        }
+                        else {
+                          return 'Please enter valid First Name';
+                        }
+                      }),
                       CustomTextFormField(label: "Last Name", controller: lastName,),
-                      CustomTextFormField(label: "Student Number", controller: studentNumber,),
-                      CustomTextFormField(label: "University Roll No.", controller: universityRollNo,),
-                      CustomTextFormField(label: "College email id", controller: email,),
-                      CustomTextFormField(label: "Contact Number", controller: contactNo,),
-                      CustomTextFormField(label: "Hackerrank id", controller: hackerrankId,),
+                      CustomTextFormField(label: "Student Number", controller: studentNumber,validator: (text){
+                        if(Validator().validateStudentNum(text!)){
+                          return null;
+                        }
+                        else {
+                          return 'Please enter valid Student Number';
+                        }
+                      }),
+                      CustomTextFormField(label: "University Roll No.", controller: universityRollNo,validator: (text){
+                        if(Validator().validateUniversityRollNum(text!)){
+                          return null;
+                        }
+                        else {
+                          return 'Please enter valid University Roll Number';
+                        }
+                      },),
+                      CustomTextFormField(label: "College email id", controller: email,validator: (text){
+                        if(Validator().validateCollegeEmail(text!)){
+                          return null;
+                        }
+                        else {
+                          return 'Please enter valid College Email ID';
+                        }
+                      }),
+                      CustomTextFormField(label: "Contact Number", controller: contactNo,validator: (text){
+                        if(Validator().validateMobileNum(text!)){
+                          return null;
+                        }
+                        else {
+                          return 'Please enter valid Contact Number';
+                        }
+                      }),
+                      CustomTextFormField(label: "Hackerrank id", controller: hackerrankId,validator: (text){
+                        if(Validator().validHackerrankId(text!)){
+                          return null;
+                        }
+                        else {
+                          return 'Please enter valid Hackerrank ID';
+                        }
+                      }),
                       const SizedBox(height: 20),
                       Row(
                         children: [

@@ -20,7 +20,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       pageBuilder: (BuildContext context, GoRouterState state) {
-        return const MaterialPage(child: LandingPage(),fullscreenDialog: true);
+        return const MaterialPage(child: RegistrationPage(),fullscreenDialog: true);
       },
     ),
     GoRoute(

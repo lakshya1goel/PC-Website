@@ -2,8 +2,10 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
 import 'package:pcwebsite/utils/constants/data/const.dart';
 import 'package:pcwebsite/utils/constants/data/social_data.dart';
+import 'package:pcwebsite/utils/constants/timer/config.dart';
 import 'package:pcwebsite/views/widgets/custom_input_field.dart';
 import 'package:pcwebsite/views/widgets/custom_social_media_button.dart';
 import 'package:pcwebsite/views/widgets/register_now.dart';
@@ -22,12 +24,11 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   String baseUrl = dotenv.get('API_BASE_URL');
   TextEditingController emailController = TextEditingController();
-
   @override
   void initState() {
+    GRecaptchaV3.hideBadge();
     super.initState();
   }
-
   Future<Duration> fetchData() async {
     try {
       Duration duration = await ApiService(baseUrl).parseDurationFromAPI();
@@ -40,10 +41,10 @@ class _LandingPageState extends State<LandingPage> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -64,7 +65,8 @@ class _LandingPageState extends State<LandingPage> {
                       future: fetchData(),
                       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                         if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
-                          Duration timeLeft = snapshot.data;bool registrationReady = timeLeft.inSeconds > 0;
+                          Duration timeLeft = snapshot.data;
+                          bool registrationReady = timeLeft.inSeconds > 0;
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,

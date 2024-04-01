@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
+import 'package:pcwebsite/controllers/registration/text_editing_controller.dart';
 import 'package:pcwebsite/services/api_services.dart';
 import 'package:pcwebsite/utils/constants/data/const.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
@@ -19,24 +21,15 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  bool isHosteler = true;
-  bool isContestOnly = false;
-  List<String> genderList = ['Male', 'Female', 'Others'];
-  List<String> branchList = <String>['CSE', 'CSE-AIML', 'CSE-DS', 'CS', 'AIML', 'CSIT', 'IT', 'ECE', 'EN', 'ME', 'CE'];
-  List<String> sectionList = List.generate(20, (index) => 'S${index + 1}');
-  String gender = 'Male';
-  String branch = 'CSE';
-  String section = 'S1';
   String registeredFor = "Workshop";
-  String recaptchaToken = "";
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
-  TextEditingController studentNumber = TextEditingController();
-  TextEditingController universityRollNo = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController contactNo = TextEditingController();
-  TextEditingController hackerrankId = TextEditingController();
+  TextControllers controllers = TextControllers();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    GRecaptchaV3.hideBadge();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +69,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextFormField(label: "First Name", controller: firstName,validator: (text){
+                      CustomTextFormField(label: "First Name", controller: controllers.firstName,validator: (text){
                         if(Validator().validateName(text!)){
                           return null;
                         }
@@ -84,8 +77,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           return 'Please enter valid First Name';
                         }
                       }),
-                      CustomTextFormField(label: "Last Name", controller: lastName,),
-                      CustomTextFormField(label: "Student Number", controller: studentNumber,validator: (text){
+                      CustomTextFormField(label: "Last Name", controller: controllers.lastName,),
+                      CustomTextFormField(label: "Student Number", controller: controllers.studentNumber,validator: (text){
                         if(Validator().validateStudentNum(text!)){
                           return null;
                         }
@@ -93,7 +86,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           return 'Please enter valid Student Number';
                         }
                       }),
-                      CustomTextFormField(label: "University Roll No.", controller: universityRollNo,validator: (text){
+                      CustomTextFormField(label: "University Roll No.", controller: controllers.universityRollNo,validator: (text){
                         if(Validator().validateUniversityRollNum(text!)){
                           return null;
                         }
@@ -101,7 +94,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           return 'Please enter valid University Roll Number';
                         }
                       },),
-                      CustomTextFormField(label: "College email id", controller: email,validator: (text){
+                      CustomTextFormField(label: "College email id", controller: controllers.email,validator: (text){
                         if(Validator().validateCollegeEmail(text!)){
                           return null;
                         }
@@ -109,7 +102,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           return 'Please enter valid College Email ID';
                         }
                       }),
-                      CustomTextFormField(label: "Contact Number", controller: contactNo,validator: (text){
+                      CustomTextFormField(label: "Contact Number", controller: controllers.contactNo,validator: (text){
                         if(Validator().validateMobileNum(text!)){
                           return null;
                         }
@@ -117,7 +110,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           return 'Please enter valid Contact Number';
                         }
                       }),
-                      CustomTextFormField(label: "Hackerrank id", controller: hackerrankId,validator: (text){
+                      CustomTextFormField(label: "Hackerrank id", controller: controllers.hackerrankId,validator: (text){
                         if(Validator().validHackerrankId(text!)){
                           return null;
                         }
@@ -130,10 +123,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         children: [
                           const Text("Branch", style: TextStyle(color: Colors.white)),
                           const SizedBox(width: 20),
-                          CustomDropDown(val: branch, list: branchList,
+                          CustomDropDown(val: studentModel.branch, list: branchList,
                             onChanged: (String? value) {
                               setState(() {
-                                branch = value!;
+                                studentModel = studentModel.copyWith(branch: value!);
                               });
                             },
                           ),
@@ -144,10 +137,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         children: [
                           const Text("Section", style: TextStyle(color: Colors.white)),
                           const SizedBox(width: 20),
-                          CustomDropDown(val: section, list: sectionList,
+                          CustomDropDown(val: studentModel.section, list: sectionList,
                             onChanged: (String? value) {
                               setState(() {
-                                section = value!;
+                                studentModel = studentModel.copyWith(section: value!);
                               });
                             },
                           ),
@@ -158,10 +151,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         children: [
                           const Text("Gender", style: TextStyle(color: Colors.white)),
                           const SizedBox(width: 20),
-                          CustomDropDown(val: gender, list: genderList,
+                          CustomDropDown(val: studentModel.gender, list: genderList,
                             onChanged: (String? value) {
                               setState(() {
-                                gender = value!;
+                                studentModel = studentModel.copyWith(gender: value!);
                               });
                             },
                           ),
@@ -186,10 +179,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             children: [
                               Radio(
                                 value: true,
-                                groupValue: isHosteler,
+                                groupValue: studentModel.is_hosteler,
                                 onChanged: (value) {
                                   setState(() {
-                                    isHosteler = value as bool;
+                                    studentModel = studentModel.copyWith(is_hosteler: value!);
                                   });
                                 },
                               ),
@@ -201,10 +194,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             children: [
                               Radio(
                                 value: false,
-                                groupValue: isHosteler,
+                                groupValue: studentModel.is_hosteler,
                                 onChanged: (value) {
                                   setState(() {
-                                    isHosteler = value as bool;
+                                    studentModel = studentModel.copyWith(is_hosteler: value!);
                                   });
                                 },
                               ),
@@ -281,57 +274,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             formKey: formKey,
                             fn: () async {
                               if (formKey.currentState!.validate()) {
-                                if (!Validator().validateName(firstName.text.trim())) {
-                                  CustomToasts().showToast([false, 'Enter a valid first name']);
-                                  return;
-                                }
-                                if (!Validator().validateName(lastName.text.trim())) {
-                                  CustomToasts().showToast([false, 'Enter a valid last name']);
-                                  return;
-                                }
-                                if (!Validator().validateStudentNum(studentNumber.text.trim())) {
-                                  CustomToasts().showToast([false, 'Enter a valid student number']);
-                                  return;
-                                }
-                                if (!Validator().validateUniversityRollNum(universityRollNo.text.trim())) {
-                                  CustomToasts().showToast([false, 'Enter a valid university roll number']);
-                                  return;
-                                }
-                                if (!Validator().validateCollegeEmail(email.text.trim())) {
-                                  CustomToasts().showToast([false, 'Enter a valid College email']);
-                                  return;
-                                }
-                                if (!Validator().validateMobileNum(contactNo.text.trim())) {
-                                  CustomToasts().showToast([false, 'Enter a valid mobile number']);
-                                  return;
-                                }
-                                if (!Validator().validHackerrankId(hackerrankId.text.trim())) {
-                                  CustomToasts().showToast([false, 'Hackerrank Id can not be empty']);
-                                  return;
-                                }
-                                String token = await ApiService(dotenv.env['API_BASE_URL']!).generateToken();
-                                recaptchaToken = token;
+                                controllers.updateData();
                                 var response = await ApiService(
-                                    dotenv.env['API_BASE_URL']!).registerUser(
-                                  firstName.text.trim(),
-                                  lastName.text.trim(),
-                                  contactNo.text.trim(),
-                                  gender,
-                                  email.text.trim(),
-                                  studentNumber.text.trim(),
-                                  branch,
-                                  section,
-                                  isHosteler,
-                                  hackerrankId.text.trim(),
-                                  isContestOnly,
-                                  recaptchaToken,
-                                  universityRollNo.text.trim(),
-                                );
+                                    dotenv.env['API_BASE_URL']!).registerUser(studentModel);
                                 var responseBody = jsonDecode(response.body);
                                 if (response.statusCode == 201) {
-                                  firstName.dispose();lastName.dispose();contactNo.dispose();
-                                  email.dispose();studentNumber.dispose();hackerrankId.dispose();
-                                  universityRollNo.dispose();
+                                  // controllers.dispose();
                                   CustomToasts().showToast([true, responseBody['message']]);
                                   registered = true;
                                   router.go('/thankyou');

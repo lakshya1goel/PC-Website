@@ -1,49 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
+import 'package:pcwebsite/models/registration/student_model.dart';
 
 
 class ApiService {
   final String apiUrl;
   ApiService(this.apiUrl);
 
-  Future registerUser(
-      String firstName,
-      String lastName,
-      String mobNum,
-      String gender,
-      String email,
-      String studentNum,
-      String branch,
-      String section,
-      bool isHosteler,
-      String hackerrankId,
-      bool isContestOnly,
-      String recaptchaToken,
-      String universityRollNo,
-      ) async {
+  Future registerUser(StudentModel student) async {
+    String token = await generateToken() ?? 'NULL';
     var headers = {
       'Content-Type': 'application/json',
-      'Recaptcha-Token': recaptchaToken
+      'Recaptcha-Token': token
     };
     var url = Uri.parse('${apiUrl}register');
-    var body = jsonEncode({
-      "first_name": firstName,
-      "last_name": lastName,
-      "mobile_number": mobNum,
-      "gender": gender,
-      "college_email": email,
-      "student_id": studentNum,
-      "branch": branch,
-      "section": section,
-      "is_hosteler": isHosteler,
-      "hacker_rank_id": hackerrankId,
-      "is_contest_only": isContestOnly,
-      "university_roll_number": universityRollNo,
-    });
-
+    var body = jsonEncode(student.toJson());
     var response = await http.post(url, headers: headers, body: body);
-
     if (response.statusCode == 201) {
       print(response.body);
       return response;

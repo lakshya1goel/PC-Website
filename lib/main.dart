@@ -14,7 +14,6 @@ Future main() async {
     bool ready = await GRecaptchaV3.ready('6LfF6aYpAAAAALksYL9nChKJRosu5-sV7ADaPPm0');
     print("Is Recaptcha ready? $ready");
   }
-
   runApp(const MyApp());
 }
 

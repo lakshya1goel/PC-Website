@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:pcwebsite/services/api_services.dart';
+import 'package:pcwebsite/utils/constants/data/const.dart';
 import 'package:pcwebsite/utils/routers/app_routers.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_dropdown.dart';
 import 'package:pcwebsite/views/widgets/registration/custom_textform_field.dart';
@@ -290,7 +291,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   email.dispose();studentNumber.dispose();hackerrankId.dispose();
                                   universityRollNo.dispose();
                                   CustomToasts().showToast([true, responseBody['message']]);
-
+                                  registered = true;
                                   router.go('/thankyou');
                                 }
                                 else {

@@ -23,7 +23,7 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   String registeredFor = "Workshop";
   TextControllers controllers = TextControllers();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -33,9 +33,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final isSmallScreen = size.width < 460;
-
+    final isSmallScreen = size < 460;
+    print('hello');
     return Scaffold(
       body: Stack(
         children: [
@@ -65,7 +64,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 child: Form(
                   autovalidateMode: AutovalidateMode.disabled,
-                  key: formKey,
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -232,60 +231,48 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   });
                                 },
                               ),
-                              const Text('Workshop', style: TextStyle(color: Colors.white)),
+                              const Text('Workshop + Contest', style: TextStyle(color: Colors.white)),
                             ],
                           ),
                           const SizedBox(width: 20),
-                          Row(
-                            children: [
-                              Radio(
-                                value: "Contest",
-                                groupValue: registeredFor,
-                                onChanged: (value) {
-                                  setState(() {
-                                    registeredFor = value as String;
-                                  });
-                                },
-                              ),
-                              const Text('Contest', style: TextStyle(color: Colors.white)),
-                            ],
-                          ),
-                          const SizedBox(width: 20),
-                          Row(
-                            children: [
-                              Radio(
-                                value: "Both",
-                                groupValue: registeredFor,
-                                onChanged: (value) {
-                                  setState(() {
-                                    registeredFor = value as String;
-                                  });
-                                },
-                              ),
-                              const Text('Both', style: TextStyle(color: Colors.white)),
-                            ],
-                          ),
                         ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 98),
+                        child: Row(
+                          children: [
+                            Radio(
+                              value: "Contest",
+                              groupValue: registeredFor,
+                              onChanged: (value) {
+                                setState(() {
+                                  registeredFor = value as String;
+                                });
+                              },
+                            ),
+                            const Text('Contest', style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Center(
                           child: CustomButton(
                             title: 'Register',
-                            formKey: formKey,
+                            formKey: _formKey,
                             fn: () async {
-                              if (formKey.currentState!.validate()) {
-                                controllers.updateData();
+                              if (_formKey.currentState!.validate()) {
+                                controllers.updateData()  ;
                                 var response = await ApiService(
                                     dotenv.env['API_BASE_URL']!).registerUser(studentModel);
                                 var responseBody = jsonDecode(response.body);
                                 if (response.statusCode == 201) {
-                                  // controllers.dispose();
                                   CustomToasts().showToast([true, responseBody['message']]);
                                   registered = true;
                                   router.go('/thankyou');
                                 }
                                 else {
-                                CustomToasts().showToast([false, responseBody['message']]);
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const RegistrationPage()));
+                                  CustomToasts().showToast([false, responseBody['message']]);
                               }
                               FocusScope.of(context).unfocus();
                             }

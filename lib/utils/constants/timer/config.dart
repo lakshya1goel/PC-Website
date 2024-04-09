@@ -1,1 +1,1 @@
-Duration tempTime = const Duration(seconds: 0);
+Duration tempTime = const Duration(seconds: 10);

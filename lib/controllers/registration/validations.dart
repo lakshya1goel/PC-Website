@@ -15,12 +15,12 @@ class Validator {
   }
 
   bool validateStudentNum(String studentNum) {
-    final RegExp studentNumRegex = RegExp(r'^23[0-9a-zA-Z_-]+$');
+    final RegExp studentNumRegex = RegExp(r'^(22|23)[0-9a-zA-Z_-]+$');
     return studentNumRegex.hasMatch(studentNum);
   }
 
   bool validateUniversityRollNum(String universityRollNum) {
-    final RegExp universityRollNumRegex = RegExp(r'^23\d{11}$');
+    final RegExp universityRollNumRegex = RegExp(r'^(22|23)\d{11}$');
     return universityRollNumRegex.hasMatch(universityRollNum);
   }
 

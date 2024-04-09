@@ -1,6 +1,6 @@
 {
-    "name": "pcwebsite",
-    "short_name": "pcwebsite",
+    "name": "pc_website",
+    "short_name": "pc_website",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
